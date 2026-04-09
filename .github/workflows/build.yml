@@ -42,19 +42,16 @@ jobs:
           find build -name "*.apk" -type f 2>/dev/null || echo "No APK found"
           ls -la build/app/outputs/flutter-apk/ 2>/dev/null || echo "No flutter-apk dir"
 
-      - name: Upload APK as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: AI-Tutor-APK
-          path: build/app/outputs/flutter-apk/app-release.apk
-          retention-days: 90
-
-      - name: Create GitHub Release
+      - name: Commit APK to releases branch
         run: |
-          echo "Creating release..."
-          gh release create "v${{ github.run_number }}" \
-            --title "AI Tutor Build #${{ github.run_number }}" \
-            --generate-notes \
-            build/app/outputs/flutter-apk/app-release.apk
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch --all
+          git checkout releases 2>/dev/null || git checkout -b releases
+          mkdir -p apks
+          cp build/app/outputs/flutter-apk/app-release.apk "apks/ai-tutor-v${{ github.run_number }}.apk"
+          git add apks/
+          git commit -m "APK Build #${{ github.run_number }}" || echo "No changes to commit"
+          git push origin releases --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
