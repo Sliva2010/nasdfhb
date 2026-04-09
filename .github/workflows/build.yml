@@ -35,8 +35,20 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Flutter doctor
+        run: flutter doctor -v
+
       - name: Build APK
-        run: flutter build apk --release
+        run: |
+          cd android
+          ./gradlew assembleRelease --stacktrace 2>&1 | tee ../gradle.log
+          cd ..
+          flutter build apk --release 2>&1 | tee build.log
+          if [ ${PIPESTATUS[0]} -ne 0 ]; then
+            echo "=== BUILD FAILED ==="
+            cat build.log
+            exit 1
+          fi
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
