@@ -27,32 +27,15 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Create local.properties
-        run: |
-          echo "flutter.sdk=$HOME/programs/flutter" > android/local.properties
-          echo "sdk.dir=$ANDROID_HOME" >> android/local.properties
-
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Flutter doctor
-        run: flutter doctor -v
-
       - name: Build APK
-        run: |
-          cd android
-          ./gradlew assembleRelease --stacktrace 2>&1 | tee ../gradle.log
-          cd ..
-          flutter build apk --release 2>&1 | tee build.log
-          if [ ${PIPESTATUS[0]} -ne 0 ]; then
-            echo "=== BUILD FAILED ==="
-            cat build.log
-            exit 1
-          fi
+        run: flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
-        if: success()
+        if: always()
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
