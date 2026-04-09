@@ -6,7 +6,7 @@ import '../providers/app_provider.dart';
 import '../screens/home_screen.dart';
 import '../utils/theme.dart';
 import '../widgets/animated_button.dart';
-import '../widgets/animated_input.dart';
+import 'animated_input.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
