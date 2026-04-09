@@ -1,0 +1,80 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you require for your project.
+# If you have shared these with your team, or use settings sync, do not delete them.
+# Otherwise, you can safely delete them from your .gitignore.
+.vscode/
+
+# Folder for flutter tools
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Coverage
+coverage/
+
+# Packages
+*.keystore
+*.jks
+*.p12
+*.lock
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/debug/**/build/
+!**/src/test/**/build/
+
+# Android
+**/android/**/gradle-wrapper.jar
+!**/android/**/gradle/
+**.idea/
+**/android/**/local.properties
+**/android/**/.gradle/
+**/android/**/captures/
+**/android/**/outputs/
+
+# iOS
+**/ios/**/build/
+**/ios/**/.symlinks/
+**/ios/**/Flutter/Flutter.framework
+**/ios/**/Flutter/App.framework
+
+# macOS
+**/macos/**/build/
+**/macos/**/Flutter/ephemeral/
+
+# Windows
+**/windows/**/flutter/
+**/windows/**/runner/Debug/
+**/windows/**/runner/Release/
+
+# Linux
+**/linux/**/flutter/
+
+# Pub
+**/pubspec.lock
+
+# Lottie animations (if any local files)
+assets/animations/
+
+# Temporary files
+*.tmp
+*.temp
