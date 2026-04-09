@@ -31,23 +31,14 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: |
-          flutter build apk --release -v 2>&1 | tee build.log
-          exit ${PIPESTATUS[0]}
+        run: flutter build apk --release --verbose
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
-        if: always()
+        if: success()
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
-
-      - name: Upload Build Log
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: build-log
-          path: build.log
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
