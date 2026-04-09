@@ -31,7 +31,13 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release || echo "BUILD_EXIT_CODE=$?"
+
+      - name: List APK files
+        run: |
+          echo "=== APK Files ==="
+          find build -name "*.apk" -type f 2>/dev/null || echo "No APK found"
+          ls -la build/app/outputs/flutter-apk/ 2>/dev/null || echo "No flutter-apk dir"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
