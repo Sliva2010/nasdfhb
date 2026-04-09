@@ -44,12 +44,17 @@ jobs:
 
       - name: Commit APK to releases branch
         run: |
+          # Save APK to temp before branch switch
+          cp build/app/outputs/flutter-apk/app-release.apk /tmp/app-release.apk
+          
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch --all
-          git checkout releases 2>/dev/null || git checkout -b releases
+          
+          # Create releases branch if not exists
+          git checkout -b releases 2>/dev/null || true
+          
           mkdir -p apks
-          cp build/app/outputs/flutter-apk/app-release.apk "apks/ai-tutor-v${{ github.run_number }}.apk"
+          cp /tmp/app-release.apk "apks/ai-tutor-v${{ github.run_number }}.apk"
           git add apks/
           git commit -m "APK Build #${{ github.run_number }}" || echo "No changes to commit"
           git push origin releases --force
