@@ -5,6 +5,9 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build Android APK
@@ -39,8 +42,19 @@ jobs:
           find build -name "*.apk" -type f 2>/dev/null || echo "No APK found"
           ls -la build/app/outputs/flutter-apk/ 2>/dev/null || echo "No flutter-apk dir"
 
-      - name: Upload APK
+      - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: AI-Tutor-APK
           path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 90
+
+      - name: Create GitHub Release
+        run: |
+          echo "Creating release..."
+          gh release create "v${{ github.run_number }}" \
+            --title "AI Tutor Build #${{ github.run_number }}" \
+            --generate-notes \
+            build/app/outputs/flutter-apk/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
