@@ -34,29 +34,10 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release || echo "BUILD_EXIT_CODE=$?"
+        run: flutter build apk --release
 
-      - name: List APK files
+      - name: Verify APK exists
         run: |
-          echo "=== APK Files ==="
-          find build -name "*.apk" -type f 2>/dev/null || echo "No APK found"
-          ls -la build/app/outputs/flutter-apk/ 2>/dev/null || echo "No flutter-apk dir"
-
-      - name: Commit APK to releases branch
-        run: |
-          # Save APK to temp before branch switch
-          cp build/app/outputs/flutter-apk/app-release.apk /tmp/app-release.apk
-          
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Create releases branch if not exists
-          git checkout -b releases 2>/dev/null || true
-          
-          mkdir -p apks
-          cp /tmp/app-release.apk "apks/ai-tutor-v${{ github.run_number }}.apk"
-          git add apks/
-          git commit -m "APK Build #${{ github.run_number }}" || echo "No changes to commit"
-          git push origin releases --force
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "=== APK Info ==="
+          ls -lh build/app/outputs/flutter-apk/app-release.apk
+          echo "Build successful! APK is ready."
