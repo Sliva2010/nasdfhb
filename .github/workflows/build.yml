@@ -44,12 +44,3 @@ jobs:
         with:
           name: AI-Tutor-APK
           path: build/app/outputs/flutter-apk/app-release.apk
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/flutter-apk/app-release.apk"
-          tag: release-${{ github.run_number }}
-          name: "AI Tutor Build #${{ github.run_number }}"
-          body: "Автоматическая сборка APK."
-          token: ${{ secrets.GITHUB_TOKEN }}
